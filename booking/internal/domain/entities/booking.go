@@ -13,6 +13,14 @@ type Booking struct {
 	status   enums.Status
 }
 
+func NewBooking() Booking {
+	b := Booking{
+		status: enums.Created,
+	}
+
+	return b
+}
+
 func (b *Booking) CurrentStatus() enums.Status {
 	return b.status
 }
