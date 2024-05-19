@@ -13,6 +13,7 @@ func TestBookingStateMachine(t *testing.T) {
 	t.Run("should set status to cancelled when cancelling a booking with created status", ShouldSetStatusToCancelledWhenCancellingABookingWithCreatedStatus)
 	t.Run("should set status to finished when finishing a booking with paid status", ShouldSetStatusToFinishedWhenFinishingABookingWithPaidStatus)
 	t.Run("should set status to refunded when refunding a booking with paid status", ShouldSetStatusToRefundedWhenRefundingABookingWithPaidStatus)
+	t.Run("should set status to created when reopening a cancelled booking", ShouldSetStatusToCreatedWhenReopeningACancelledBooking)
 }
 
 func ShouldAlwaysStartBookingWithCreatedStatus(t *testing.T) {
@@ -53,4 +54,13 @@ func ShouldSetStatusToRefundedWhenRefundingABookingWithPaidStatus(t *testing.T) 
 	booking.ChangeState(enums.Refund)
 
 	assert.Equal(t, enums.Refunded, booking.CurrentStatus())
+}
+
+func ShouldSetStatusToCreatedWhenReopeningACancelledBooking(t *testing.T) {
+	booking := entities.NewBooking()
+
+	booking.ChangeState(enums.Cancel)
+	booking.ChangeState(enums.Reopen)
+
+	assert.Equal(t, enums.Created, booking.CurrentStatus())
 }
