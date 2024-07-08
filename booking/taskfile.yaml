@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  migrate-up:
+    desc: Run database migrations up
+    cmds:
+      - migrate -path pkg/postgres/migrations/ -database "postgres://postgres:docker@localhost:5432/booking?sslmode=disable" up
+  migrate-down:
+    desc: Rollback database migrations down
+    cmds:
+      - migrate -path pkg/postgres/migrations/ -database "postgres://postgres:docker@localhost:5432/booking?sslmode=disable" down
