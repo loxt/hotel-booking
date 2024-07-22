@@ -2,5 +2,7 @@ CREATE TABLE guests (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   surname VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL
+  email VARCHAR(255) NOT NULL,
+  document_id VARCHAR(255) NOT NULL,
+  document_type VARCHAR(255) NOT NULL
 );
