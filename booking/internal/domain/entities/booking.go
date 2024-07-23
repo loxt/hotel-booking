@@ -10,6 +10,8 @@ type Booking struct {
 	PlacedAt time.Time
 	Start    time.Time
 	End      time.Time
+	Room     Room
+	Guest    Guest
 	status   enums.Status
 }
 
