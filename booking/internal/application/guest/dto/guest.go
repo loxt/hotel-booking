@@ -7,12 +7,12 @@ import (
 )
 
 type GuestDTO struct {
-	Id       string
-	Name     string
-	Surname  string
-	Email    string
-	IdNumber string
-	IdType   string
+	Id       string `json:"id,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Surname  string `json:"surname,omitempty"`
+	Email    string `json:"email,omitempty"`
+	IdNumber string `json:"id_number,omitempty"`
+	IdType   string `json:"id_type,omitempty"`
 }
 
 func (dto *GuestDTO) ToEntity() *entities.Guest {
@@ -25,5 +25,16 @@ func (dto *GuestDTO) ToEntity() *entities.Guest {
 			Value:        dto.IdNumber,
 			DocumentType: enums.DocumentType(dto.IdType),
 		},
+	}
+}
+
+func (dto *GuestDTO) FromEntity(guest *entities.Guest) GuestDTO {
+	return GuestDTO{
+		Id:       guest.Id,
+		Name:     guest.Name,
+		Surname:  guest.Surname,
+		Email:    guest.Email,
+		IdNumber: guest.DocumentID.Value,
+		IdType:   string(guest.DocumentID.DocumentType),
 	}
 }

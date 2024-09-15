@@ -29,13 +29,15 @@ func (r *GuestRepository) Get(id string) (*entities.Guest, error) {
 }
 
 func (r *GuestRepository) Create(guest *entities.Guest) error {
-	sql := `INSERT INTO guests (id, name, surname, email, document_id, document_type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	sql := `INSERT INTO guests (name, surname, email, document_id, document_type) VALUES ($1, $2, $3, $4, $5) RETURNING id`
 
 	var id string
 
-	if err := r.db.QueryRow(context.Background(), sql, guest.Id, guest.Name, guest.Surname, guest.Email, guest.DocumentID.Value, guest.DocumentID.DocumentType).Scan(&id); err != nil {
+	if err := r.db.QueryRow(context.Background(), sql, guest.Name, guest.Surname, guest.Email, guest.DocumentID.Value, guest.DocumentID.DocumentType).Scan(&id); err != nil {
 		return err
 	}
+
+	guest.Id = id
 
 	return nil
 }
