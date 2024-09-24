@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/loxt/hotel-booking/booking/internal/application/guest/ports"
 	"github.com/loxt/hotel-booking/booking/internal/application/guest/requests"
+	"github.com/loxt/hotel-booking/booking/internal/application/shared"
 	"net/http"
 )
 
@@ -32,7 +33,11 @@ func (gc *Controller) Create(w http.ResponseWriter, r *http.Request) {
 	res, err := gc.manager.CreateGuest(body)
 
 	if err != nil || !res.Success {
-		w.WriteHeader(http.StatusInternalServerError)
+		if res.ErrorCode == shared.InvalidEmail || res.ErrorCode == shared.InvalidPersonID || res.ErrorCode == shared.MissingRequiredInfo {
+			w.WriteHeader(http.StatusBadRequest)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		_, _ = w.Write([]byte(fmt.Sprintf(`{"message": "%s"}`, res.Message)))
 		return
 	}
